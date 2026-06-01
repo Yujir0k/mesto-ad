@@ -1,4 +1,4 @@
-const fallbackImage = new URL("../../images/logo.svg", import.meta.url).href;
+const fallbackImage = new URL("../../images/fallback-cat.jpg", import.meta.url).href;
 
 const getCardTemplate = () =>
   document
