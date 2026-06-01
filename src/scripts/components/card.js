@@ -1,3 +1,5 @@
+const fallbackImage = new URL("../../images/logo.svg", import.meta.url).href;
+
 const getCardTemplate = () =>
   document
     .getElementById("card-template")
@@ -40,7 +42,21 @@ export const createCardElement = (
   cardTitle.textContent = cardData.name;
   updateCardLikes(cardElement, cardData, currentUserId);
 
-  cardImage.addEventListener("click", () => onPreviewPicture(cardData));
+  cardImage.addEventListener(
+    "error",
+    () => {
+      cardImage.src = fallbackImage;
+      cardImage.alt = `Изображение недоступно: ${cardData.name}`;
+    },
+    { once: true }
+  );
+
+  cardImage.addEventListener("click", () =>
+    onPreviewPicture({
+      name: cardData.name,
+      link: cardImage.currentSrc || cardImage.src,
+    })
+  );
   likeButton.addEventListener("click", () => onLikeCard(cardData, cardElement));
 
   if (cardData.owner._id === currentUserId) {

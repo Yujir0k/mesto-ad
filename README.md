@@ -18,4 +18,4 @@ npm run build
 npm run deploy
 ```
 
-Опубликованный проект: [Mesto](https://yujir0k.github.io/mesto-ad/)
+Опубликованный проект: [Mesto](https://yujir0k.github.io/mesto-ad-pages/)
