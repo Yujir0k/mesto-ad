@@ -1,29 +1,4 @@
-const fallbackImage = new URL(
-  "../../images/fallback-cat.jpg",
-  import.meta.url
-).href;
-const blockedImageHosts = new Set([
-  "link.ru",
-  "static.vecteezy.com",
-  "yandex.ru",
-]);
-
-const getSafeCardImageSrc = (link) => {
-  try {
-    const url = new URL(link);
-
-    if (
-      !["http:", "https:"].includes(url.protocol) ||
-      blockedImageHosts.has(url.hostname)
-    ) {
-      return fallbackImage;
-    }
-
-    return url.href;
-  } catch {
-    return fallbackImage;
-  }
-};
+import { getSafeImageSrc } from "./image.js";
 
 const getCardTemplate = () =>
   document
@@ -62,7 +37,7 @@ export const createCardElement = (
     ".card__control-button_type_delete"
   );
 
-  cardImage.src = getSafeCardImageSrc(cardData.link);
+  cardImage.src = getSafeImageSrc(cardData.link);
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
   updateCardLikes(cardElement, cardData, currentUserId);
@@ -70,7 +45,7 @@ export const createCardElement = (
   cardImage.addEventListener(
     "error",
     () => {
-      cardImage.src = fallbackImage;
+      cardImage.src = getSafeImageSrc();
       cardImage.alt = `Изображение недоступно: ${cardData.name}`;
     },
     { once: true }

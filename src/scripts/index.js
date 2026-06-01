@@ -13,6 +13,7 @@ import {
   deleteCardElement,
   updateCardLikes,
 } from "./components/card.js";
+import { getSafeImageSrc } from "./components/image.js";
 import {
   closeModalWindow,
   openModalWindow,
@@ -90,7 +91,9 @@ const renderLoading = (buttonElement, isLoading, loadingText = "Сохранен
 const setUserInfo = (userData) => {
   profileTitle.textContent = userData.name;
   profileDescription.textContent = userData.about;
-  profileAvatar.style.backgroundImage = `url("${userData.avatar}")`;
+  profileAvatar.style.backgroundImage = `url("${getSafeImageSrc(
+    userData.avatar
+  )}")`;
 };
 
 const createInfoString = (term, description) => {
