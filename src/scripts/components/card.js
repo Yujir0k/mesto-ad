@@ -1,4 +1,29 @@
-const fallbackImage = new URL("../../images/fallback-cat.jpg", import.meta.url).href;
+const fallbackImage = new URL(
+  "../../images/fallback-cat.jpg",
+  import.meta.url
+).href;
+const blockedImageHosts = new Set([
+  "link.ru",
+  "static.vecteezy.com",
+  "yandex.ru",
+]);
+
+const getSafeCardImageSrc = (link) => {
+  try {
+    const url = new URL(link);
+
+    if (
+      !["http:", "https:"].includes(url.protocol) ||
+      blockedImageHosts.has(url.hostname)
+    ) {
+      return fallbackImage;
+    }
+
+    return url.href;
+  } catch {
+    return fallbackImage;
+  }
+};
 
 const getCardTemplate = () =>
   document
@@ -37,7 +62,7 @@ export const createCardElement = (
     ".card__control-button_type_delete"
   );
 
-  cardImage.src = cardData.link;
+  cardImage.src = getSafeCardImageSrc(cardData.link);
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
   updateCardLikes(cardElement, cardData, currentUserId);
